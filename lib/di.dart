@@ -16,6 +16,7 @@ import 'package:payroll_app_opr_test/domain/use_cases/employee/delete_employee.d
 import 'package:payroll_app_opr_test/domain/use_cases/employee/get_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/update_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employees/get_employees.dart';
+import 'package:payroll_app_opr_test/domain/use_cases/employees/search_employees.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/session/save_session.dart';
 
 final getIt = GetIt.instance;
@@ -31,6 +32,7 @@ void setup() {
   getIt.registerLazySingleton<UpdateEmployee>(() => UpdateEmployee(getIt<EmployeeRepository>()));
 
   getIt.registerLazySingleton<GetEmployees>(() => GetEmployees(getIt<EmployeeRepository>()));
+  getIt.registerLazySingleton<SearchEmployees>(() => SearchEmployees(getIt<EmployeeRepository>()));
 
   // Repositories
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(getIt<AuthService>()));

@@ -12,7 +12,6 @@ final class EmployeesLoaded extends EmployeesState {
 
   EmployeesLoaded(this.employees);
 }
-
 final class EmployeesError extends EmployeesState {
   final String message;
 

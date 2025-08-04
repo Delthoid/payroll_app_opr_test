@@ -27,4 +27,29 @@ class EmployeesService {
       );
     }
   }
+
+  Future<ApiResponse<List<Employee>>> searchEmployees(String query) async {
+    try {
+      final db = await _sqlService.database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'employees',
+        where: 'first_name LIKE ? OR last_name LIKE ?',
+        whereArgs: ['%$query%', '%$query%'],
+        orderBy: 'id DESC',
+      );
+
+      final employees = maps.map((map) => EmployeeDto.fromJson(map)).toList();
+      return ApiResponse(
+        data: employees,
+        success: true,
+        message: 'Employees retrieved successfully',
+      );
+    } catch (e) {
+      return ApiResponse(
+        error: 'Database error',
+        success: false,
+        message: 'Error searching employees: $e',
+      );
+    }
+  }
 }

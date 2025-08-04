@@ -7,4 +7,5 @@ abstract class EmployeeRepository {
   Future<ApiResponse<Employee>> addEmployee(Employee employee);
   Future<ApiResponse<Employee>> updateEmployee(Employee employee);
   Future<ApiResponse<Employee>> deleteEmployee(String id);
+  Future<ApiResponse<List<Employee>>> searchEmployees(String query);
 }

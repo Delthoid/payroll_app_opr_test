@@ -54,7 +54,9 @@ class _EmployeesPageState extends State<EmployeesPage> {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
-                          // Implement search functionality here
+                          context.read<EmployeesBloc>().add(
+                            SearchEmployeesEvent(value),
+                          );
                         },
                       ),
 

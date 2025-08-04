@@ -10,3 +10,9 @@ final class UpdateLocalEmployeeEvent extends EmployeesEvent {
 
   UpdateLocalEmployeeEvent(this.employee);
 }
+
+final class SearchEmployeesEvent extends EmployeesEvent {
+  final String query;
+
+  SearchEmployeesEvent(this.query);
+}

@@ -56,4 +56,9 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
       ),
     );
   }
+  
+  @override
+  Future<ApiResponse<List<Employee>>> searchEmployees(String query) {
+    return _employeesService.searchEmployees(query);
+  }
 }
