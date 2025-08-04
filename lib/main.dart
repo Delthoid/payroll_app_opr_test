@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:payroll_app_opr_test/core/bloc_observer.dart';
+import 'package:payroll_app_opr_test/di.dart';
+import 'package:payroll_app_opr_test/presentation/auth/bloc/auth_bloc.dart';
 import 'package:payroll_app_opr_test/router/router.dart';
 
 void main() {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  setup();
+
+  Bloc.observer = AppBlocObserver();
+
   runApp(const MyApp());
 }
 
@@ -10,11 +20,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Payroll App',
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent)),
-      routerConfig: AppRouter.router,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthBloc())
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Payroll App',
+        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent)),
+        routerConfig: AppRouter.router,
+      ),
     );
   }
 }
