@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
+import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
 import 'package:payroll_app_opr_test/router/router.dart';
 
 class EmployeesPage extends StatefulWidget {
@@ -76,6 +77,9 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                 title: Text(employee.firstName),
                                 subtitle: Text(employee.position),
                                 onTap: () {
+                                  context.read<EmployeeBloc>().add(
+                                    GetEmployeeEvent(employeeId: employee.id),
+                                  );
                                   context.pushNamed(
                                     RouteNames.employeeDetails,
                                     pathParameters: {'id': employee.id},

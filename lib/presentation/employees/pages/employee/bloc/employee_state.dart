@@ -1,7 +1,10 @@
 part of 'employee_bloc.dart';
 
 @immutable
-sealed class EmployeeState {}
+sealed class EmployeeState extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
 
 final class EmployeeInitial extends EmployeeState {}
 
@@ -17,6 +20,24 @@ final class EmployeeLoaded extends EmployeeState {
   final Employee employee;
 
   EmployeeLoaded(this.employee);
+
+  @override
+  List<Object?> get props => [employee];
+}
+
+final class EmployeeUpdating extends EmployeeLoaded {
+  EmployeeUpdating(super.employee);
+
+  @override
+  List<Object?> get props => [employee];
+}
+
+final class EmployeeUpdated extends EmployeeLoaded {
+  final String message;
+  EmployeeUpdated(super.employee, this.message);
+
+  @override
+  List<Object?> get props => [employee, message];
 }
 
 final class EmployeeDeleting extends EmployeeLoaded {

@@ -60,7 +60,7 @@ class EmployeeService {
     }
   }
 
-  Future<ApiResponse<void>> deleteEmployee(String id) async {
+  Future<ApiResponse<Employee>> deleteEmployee(String id) async {
     try {
       final db = await _sqlService.database;
       final int count = await db.delete(
@@ -86,6 +86,29 @@ class EmployeeService {
         error: 'Database error',
         success: false,
         message: 'Error deleting employee: $e',
+      );
+    }
+  }
+
+  Future<ApiResponse<Employee>> updateEmployee(EmployeeDto employee) async {
+    try {
+      final db = await _sqlService.database;
+      await db.update(
+        'employees',
+        employee.toJson(),
+        where: 'id = ?',
+        whereArgs: [employee.id],
+      );
+      return ApiResponse(
+        data: employee,
+        success: true,
+        message: 'Employee updated successfully',
+      );
+    } catch (e) {
+      return ApiResponse(
+        error: 'Database error',
+        success: false,
+        message: 'Error updating employee: $e',
       );
     }
   }

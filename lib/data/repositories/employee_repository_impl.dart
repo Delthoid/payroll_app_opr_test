@@ -26,7 +26,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
   }
 
   @override
-  Future<ApiResponse<void>> deleteEmployee(String id) {
+  Future<ApiResponse<Employee>> deleteEmployee(String id) {
     return _employeeService.deleteEmployee(id);
   }
 
@@ -42,7 +42,18 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
   @override
   Future<ApiResponse<Employee>> updateEmployee(Employee employee) {
-    // TODO: implement updateEmployee
-    throw UnimplementedError();
+    if (employee.id.isEmpty) {
+      throw Exception('Employee ID cannot be empty');
+    }
+    return _employeeService.updateEmployee(
+      EmployeeDto(
+        id: employee.id,
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        email: employee.email,
+        position: employee.position,
+        salary: employee.salary,
+      ),
+    );
   }
 }

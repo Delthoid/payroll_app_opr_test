@@ -6,6 +6,7 @@ import 'package:payroll_app_opr_test/data/services/session_service.dart';
 import 'package:payroll_app_opr_test/presentation/auth/pages/auth_page.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/add_new_employee_page.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
+import 'package:payroll_app_opr_test/presentation/employees/pages/employee/edit_employee_page.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/employee_details_page.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employees_page.dart';
 import 'package:payroll_app_opr_test/presentation/home/home_page.dart';
@@ -17,6 +18,7 @@ class RouteNames {
   static const String employeeList = 'employeeList';
   static const String employeeCreate = 'employeeCreate';
   static const String employeeDetails = 'employeeDetails';
+  static const String employeeEdit = 'employeeEdit';
   static const String payroll = 'payroll';
 }
 
@@ -26,6 +28,7 @@ class RoutePaths {
   static const String employeeList = '/employeeList';
   static const String employeeCreate = '/employeeCreate';
   static const String employeeDetails = '/employeeDetails/:id';
+  static const String employeeEdit = '/employeeEdit/:employeeId';
   static const String payroll = '/payroll';
 }
 
@@ -79,11 +82,21 @@ class AppRouter {
               if (employeeId == null) {
                 return const Center(child: Text('Employee ID is required'));
               }
-              return BlocProvider(
-                create: (context) => EmployeeBloc()..add(GetEmployeeEvent(employeeId: employeeId)),
-                child: const EmployeeDetailsPage(),
-              );
+              return const EmployeeDetailsPage();
             },
+            routes: [
+              GoRoute(
+                path: RoutePaths.employeeEdit,
+                name: RouteNames.employeeEdit,
+                builder: (context, state) {
+                  final employeeId = state.pathParameters['employeeId'];
+                  if (employeeId == null) {
+                    return const Center(child: Text('Employee ID is required'));
+                  }
+                  return EditEmployeePage();
+                },
+              ),
+            ]
           ),
         ],
       ),

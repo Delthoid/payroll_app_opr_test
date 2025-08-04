@@ -14,6 +14,7 @@ import 'package:payroll_app_opr_test/domain/use_cases/auth/auth_request.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/add_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/delete_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/get_employee.dart';
+import 'package:payroll_app_opr_test/domain/use_cases/employee/update_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employees/get_employees.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/session/save_session.dart';
 
@@ -27,6 +28,7 @@ void setup() {
   getIt.registerLazySingleton<AddEmployee>(() => AddEmployee(getIt<EmployeeRepository>()));
   getIt.registerLazySingleton<GetEmployee>(() => GetEmployee(getIt<EmployeeRepository>()));
   getIt.registerLazySingleton<DeleteEmployee>(() => DeleteEmployee(getIt<EmployeeRepository>()));
+  getIt.registerLazySingleton<UpdateEmployee>(() => UpdateEmployee(getIt<EmployeeRepository>()));
 
   getIt.registerLazySingleton<GetEmployees>(() => GetEmployees(getIt<EmployeeRepository>()));
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:payroll_app_opr_test/core/utils/dialog_utils.dart';
 import 'package:payroll_app_opr_test/core/widgets/error_container.dart';
 import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
+import 'package:payroll_app_opr_test/router/router.dart';
 
 class EmployeeDetailsPage extends StatefulWidget {
   const EmployeeDetailsPage({super.key});
@@ -18,9 +20,35 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Employee Details')),
+      appBar: AppBar(
+        title: const Text('Employee Details'),
+        actions: [
+          BlocBuilder<EmployeeBloc, EmployeeState>(
+            builder: (context, state) {
+              if (state is EmployeeLoaded) {
+                return IconButton(
+                  onPressed: () {
+                    final employeeId = state.employee.id;
+                    context.goNamed(
+                      RouteNames.employeeEdit,
+                      pathParameters: {'employeeId': employeeId, 'id': employeeId},
+                    );
+                  },
+                  icon: Icon(Icons.edit),
+                  tooltip: 'Edit Employee',
+                );
+              }
+
+              return const SizedBox.shrink();
+            },
+          ),
+        ],
+      ),
 
       body: BlocConsumer<EmployeeBloc, EmployeeState>(
+        buildWhen: (previous, current) {
+          return previous != current;
+        },
         listener: (context, state) {
           if (state is EmployeeDeleting) {
             DialogUtils.showLoadingDialog(
@@ -34,16 +62,16 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
             Navigator.of(context).pop();
             Navigator.of(context).pop();
             context.read<EmployeesBloc>().add(LoadEmployeesEvent());
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
 
           if (state is EmployeeDetailsError) {
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
@@ -135,11 +163,11 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () async {
-
                           final confirm = await DialogUtils.showConfirmationDialog(
                             context: context,
                             title: 'Delete Employee',
-                            content: 'Are you sure you want to delete this employee?',
+                            content:
+                                'Are you sure you want to delete this employee?',
                           );
 
                           if (confirm ?? false) {

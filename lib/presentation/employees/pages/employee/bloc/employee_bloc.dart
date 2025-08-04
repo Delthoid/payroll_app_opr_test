@@ -1,10 +1,13 @@
+
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/add_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/delete_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/get_employee.dart';
+import 'package:payroll_app_opr_test/domain/use_cases/employee/update_employee.dart';
 
 part 'employee_event.dart';
 part 'employee_state.dart';
@@ -13,6 +16,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
 
   final AddEmployee addEmployee = GetIt.instance<AddEmployee>();
   final GetEmployee getEmployee = GetIt.instance<GetEmployee>();
+  final UpdateEmployee updateEmployee = GetIt.instance<UpdateEmployee>();
   final DeleteEmployee deleteEmployee = GetIt.instance<DeleteEmployee>();
 
   EmployeeBloc() : super(EmployeeInitial()) {
@@ -43,6 +47,21 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         }
       } catch (e) {
         emit(EmployeeDetailsError('Failed to load employee'));
+      }
+    });
+
+    on<UpdateEmployeeEvent>((event, emit) async {
+      try {
+        emit(EmployeeUpdating(event.employee));
+
+        final result = await updateEmployee.call(event.employee);
+        if(result.success) {
+          emit(EmployeeUpdated(result.data!, 'Employee updated successfully'));
+        } else {
+          emit(EmployeeDetailsError('Failed to update employee'));
+        }
+      } catch (e) {
+        emit(EmployeeDetailsError('Failed to update employee'));
       }
     });
 
