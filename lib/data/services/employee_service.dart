@@ -29,4 +29,34 @@ class EmployeeService {
       );
     }
   }
+
+  Future<ApiResponse<Employee?>> getEmployeeById(String id) async {
+    try {
+      final db = await _sqlService.database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'employees',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+      if (maps.isNotEmpty) {
+        return ApiResponse(
+          data: EmployeeDto.fromJson(maps.first),
+          message: 'Employee retrieved successfully',
+        );
+      } else {
+        return ApiResponse(
+          error: 'Employee not found',
+          success: false,
+          message: 'No employee found with id $id',
+        );
+      }
+    } catch (e) {
+      return ApiResponse(
+        error: 'Database error',
+        success: false,
+        message: 'Error retrieving employee: $e',
+      );
+    }
+  }
 }

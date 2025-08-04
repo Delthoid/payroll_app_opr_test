@@ -32,9 +32,8 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
   }
 
   @override
-  Future<ApiResponse<Employee>> getEmployeeById(String id) {
-    // TODO: implement getEmployeeById
-    throw UnimplementedError();
+  Future<ApiResponse<Employee?>> getEmployeeById(String id) {
+    return _employeeService.getEmployeeById(id);
   }
 
   @override

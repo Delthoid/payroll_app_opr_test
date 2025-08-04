@@ -12,6 +12,7 @@ import 'package:payroll_app_opr_test/domain/repositories/employee_repository.dar
 import 'package:payroll_app_opr_test/domain/repositories/session_repository.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/auth/auth_request.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/add_employee.dart';
+import 'package:payroll_app_opr_test/domain/use_cases/employee/get_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employees/get_employees.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/session/save_session.dart';
 
@@ -23,6 +24,8 @@ void setup() {
   getIt.registerLazySingleton<SaveSession>(() => SaveSession(getIt<SessionRepository>()));
 
   getIt.registerLazySingleton<AddEmployee>(() => AddEmployee(getIt<EmployeeRepository>()));
+  getIt.registerLazySingleton<GetEmployee>(() => GetEmployee(getIt<EmployeeRepository>()));
+
   getIt.registerLazySingleton<GetEmployees>(() => GetEmployees(getIt<EmployeeRepository>()));
 
   // Repositories

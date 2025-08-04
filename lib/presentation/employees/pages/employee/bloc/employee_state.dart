@@ -12,3 +12,15 @@ final class EmployeeSuccess extends EmployeeState {
 
   EmployeeSuccess(this.message);
 }
+
+final class EmployeeLoaded extends EmployeeState {
+  final Employee employee;
+
+  EmployeeLoaded(this.employee);
+}
+
+final class EmployeeDetailsError extends EmployeeState {
+  final String message;
+
+  EmployeeDetailsError(this.message);
+}

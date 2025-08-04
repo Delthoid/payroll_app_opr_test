@@ -66,13 +66,20 @@ class _EmployeesPageState extends State<EmployeesPage> {
                           itemBuilder: (context, index) {
                             final employee = state.employees[index];
                             return ListTile(
-                              leading: CircleAvatar(
-                                child: Text('${employee.firstName[0]}${employee.lastName[0]}'.toUpperCase()),
+                              leading: Hero(
+                                tag: employee.id,
+                                child: CircleAvatar(
+                                  child: Text('${employee.firstName[0]}${employee.lastName[0]}'.toUpperCase()),
+                                ),
                               ),
                               title: Text(employee.firstName),
                               subtitle: Text(employee.position),
                               onTap: () {
-                                
+                                context.pushNamed(
+                                  RouteNames.employeeDetails,
+                                  pathParameters: {'id': employee.id},
+                                  queryParameters: {'name': employee.firstName},
+                                );
                               },
                             );
                           },

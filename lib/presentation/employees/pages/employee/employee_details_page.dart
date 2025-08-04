@@ -1,0 +1,114 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:payroll_app_opr_test/core/widgets/error_container.dart';
+import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
+
+class EmployeeDetailsPage extends StatefulWidget {
+  const EmployeeDetailsPage({super.key});
+
+  @override
+  State<EmployeeDetailsPage> createState() => _EmployeeDetailsPageState();
+}
+
+class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Employee Details')),
+      body: BlocConsumer<EmployeeBloc, EmployeeState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          if (state is EmployeeLoading || state is EmployeeInitial) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (state is EmployeeDetailsError) {
+            return Center(child: ErrorContainer(errorMessage: state.message));
+          }
+
+          if (state is EmployeeLoaded) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 12,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primaryContainer.withValues(
+                          alpha: 0.5,
+                        ),
+                        border: Border.all(
+                          color: theme.colorScheme.primary,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: 4,
+                        children: [
+                          Hero(
+                            tag: state.employee.id,
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: theme.colorScheme.primary,
+                              child: Text(
+                                '${state.employee.firstName[0]}${state.employee.lastName[0]}'.toUpperCase(),
+                                style: theme.textTheme.displaySmall?.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '${state.employee.firstName} ${state.employee.lastName}',
+                            style: theme.textTheme.titleLarge,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              state.employee.position,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onPrimaryContainer,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+
+                    ListTile(
+                      leading: const Icon(Icons.email),
+                      title: Text(state.employee.email),
+                      subtitle: Text('Email'),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.attach_money),
+                      title: Text('\$${state.employee.salary.toStringAsFixed(2)}'),
+                      subtitle: Text('Salary'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          return Center(child: Text('No employee details available'));
+        },
+      ),
+    );
+  }
+}

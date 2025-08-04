@@ -8,3 +8,9 @@ final class AddEmployeeEvent extends EmployeeEvent {
 
   AddEmployeeEvent({required this.employee});
 }
+
+final class GetEmployeeEvent extends EmployeeEvent {
+  final String employeeId;
+
+  GetEmployeeEvent({required this.employeeId});
+}
