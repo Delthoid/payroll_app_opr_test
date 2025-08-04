@@ -149,9 +149,9 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
                     ListTile(
                       leading: const Icon(Icons.attach_money),
                       title: Text(
-                        '\$${state.employee.salary.toStringAsFixed(2)}',
+                        '\$${state.employee.hourlyRate.toStringAsFixed(2)}',
                       ),
-                      subtitle: Text('Salary'),
+                      subtitle: Text('Hourly Rate'),
                     ),
 
                     const Divider(),

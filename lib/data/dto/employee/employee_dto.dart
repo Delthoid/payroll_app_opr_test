@@ -7,7 +7,7 @@ class EmployeeDto extends Employee {
     required super.lastName,
     required super.email,
     required super.position,
-    required super.salary,
+    required super.hourlyRate,
   });
 
   factory EmployeeDto.fromJson(Map<String, dynamic> json) {
@@ -17,7 +17,7 @@ class EmployeeDto extends Employee {
       lastName: json['last_name'] as String,
       email: json['email'] as String,
       position: json['position'] as String,
-      salary: (json['salary'] as num).toDouble(),
+      hourlyRate: (json['hourly_rate'] as num).toDouble(),
     );
   }
 
@@ -28,7 +28,7 @@ class EmployeeDto extends Employee {
       'last_name': lastName,
       'email': email,
       'position': position,
-      'salary': salary,
+      'hourly_rate': hourlyRate,
     };
   }
 
@@ -39,7 +39,7 @@ class EmployeeDto extends Employee {
       'last_name': lastName,
       'email': email,
       'position': position,
-      'salary': salary,
+      'hourly_rate': hourlyRate,
     };
   }
 }

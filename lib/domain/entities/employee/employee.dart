@@ -6,7 +6,7 @@ class Employee extends Equatable {
   final String lastName;
   final String email;
   final String position;
-  final double salary;
+  final double hourlyRate;
 
   Employee({
     required this.id,
@@ -14,7 +14,7 @@ class Employee extends Equatable {
     required this.lastName,
     required this.email,
     required this.position,
-    required this.salary,
+    required this.hourlyRate,
   });
 
   Employee copyWith({
@@ -23,7 +23,7 @@ class Employee extends Equatable {
     String? lastName,
     String? email,
     String? position,
-    double? salary,
+    double? hourlyRate,
   }) {
     return Employee(
       id: id ?? this.id,
@@ -31,7 +31,7 @@ class Employee extends Equatable {
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
       position: position ?? this.position,
-      salary: salary ?? this.salary,
+      hourlyRate: hourlyRate ?? this.hourlyRate,
     );
   }
 
@@ -43,10 +43,10 @@ class Employee extends Equatable {
       lastName: '',
       email: '',
       position: '',
-      salary: 0.0,
+      hourlyRate: 0.0,
     );
   }
   
   @override
-  List<Object?> get props => [id, firstName, lastName, email, position, salary];
+  List<Object?> get props => [id, firstName, lastName, email, position, hourlyRate];
 }

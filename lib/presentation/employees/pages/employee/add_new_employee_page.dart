@@ -20,7 +20,7 @@ class _AddNewEmployeePageState extends State<AddNewEmployeePage> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _positionController = TextEditingController();
-  final TextEditingController _salaryController = TextEditingController();
+  final TextEditingController _hourlyRateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _AddNewEmployeePageState extends State<AddNewEmployeePage> {
                       lastName: _lastNameController.text,
                       email: _emailController.text,
                       position: _positionController.text,
-                      salary: double.parse(_salaryController.text),
+                      hourlyRate: double.parse(_hourlyRateController.text),
                       id: '',
                     ),
                   ),
@@ -129,22 +129,22 @@ class _AddNewEmployeePageState extends State<AddNewEmployeePage> {
                       },
                     ),
                     TextFormField(
-                      controller: _salaryController,
+                      controller: _hourlyRateController,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration(
-                        labelText: 'Salary',
+                        labelText: 'Hourly Rate',
                         border: OutlineInputBorder(),
                       ),
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the salary';
+                          return 'Please enter the hourly rate';
                         }
 
-                        final salary = double.tryParse(value);
-                        if (salary == null || salary <= 0) {
-                          return 'Please enter a valid salary';
+                        final hourlyRate = double.tryParse(value);
+                        if (hourlyRate == null || hourlyRate <= 0) {
+                          return 'Please enter a valid hourly rate';
                         }
 
                         return null;

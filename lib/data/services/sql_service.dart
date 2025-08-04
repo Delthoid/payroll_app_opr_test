@@ -89,7 +89,7 @@ class SqlService {
             last_name TEXT NOT NULL,
             email TEXT NOT NULL,
             position TEXT NOT NULL,
-            salary REAL NOT NULL
+            hourly_rate REAL NOT NULL
           )
         ''');
       },

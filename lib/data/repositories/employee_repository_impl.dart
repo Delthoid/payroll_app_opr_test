@@ -20,7 +20,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
         lastName: employee.lastName,
         email: employee.email,
         position: employee.position,
-        salary: employee.salary,
+        hourlyRate: employee.hourlyRate,
       ),
     );
   }
@@ -52,7 +52,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
         lastName: employee.lastName,
         email: employee.email,
         position: employee.position,
-        salary: employee.salary,
+        hourlyRate: employee.hourlyRate,
       ),
     );
   }
