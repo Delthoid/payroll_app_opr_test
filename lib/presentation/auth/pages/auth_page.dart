@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:payroll_app_opr_test/core/utils/validators.dart';
 import 'package:payroll_app_opr_test/core/widgets/error_container.dart';
+import 'package:payroll_app_opr_test/data/services/session_service.dart';
 import 'package:payroll_app_opr_test/presentation/auth/bloc/auth_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/auth/bloc/auth_bloc_extension.dart';
+import 'package:payroll_app_opr_test/router/router.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -20,11 +24,24 @@ class _AuthPageState extends State<AuthPage> {
   bool _showPassword = false;
 
   @override
+  void initState() {
+    final getSession = GetIt.instance<SessionService>();
+    getSession.getCurrentSession().then((session) {
+      if (session != null) {
+        context.pushReplacementNamed(RouteNames.home);
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        // TODO: implement listener
+        if (state is AuthSuccess) {
+          context.pushReplacementNamed(RouteNames.home);
+        }
       },
       builder: (context, state) {
         return Scaffold(

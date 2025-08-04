@@ -1,27 +1,42 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:payroll_app_opr_test/core/models/api_response.dart';
+import 'package:payroll_app_opr_test/core/models/user_session.dart';
 
 class AuthService {
-  
-  final String _email = "admin@payrollapp.com";
-  final String _password = "admin123";
-  
-  Future<ApiResponse<String>> login(String email, String password) async{
-    // Demonstration of a login method
+  final http.Client _client = http.Client();
 
-    // Simulate delay
-    await Future.delayed(Duration(seconds: 2));
+  final String _baseUrl = '';
 
-    if (email.trim() == _email && password.trim() == _password) {
-      return ApiResponse<String>(
-        data: "Login successful",
-        success: true,
-        message: "Welcome back!",
+  Future<ApiResponse<UserSession>> login(String email, String password) async {
+    try {
+      final response = await _client.post(
+        Uri.parse('${_baseUrl}api-auth/'),
+        body: {'username': email, 'password': password},
       );
-    } else {
-      return ApiResponse<String>(
+
+      final body = jsonDecode(response.body);
+
+      if (response.statusCode != 200) {
+        return ApiResponse(
+          error: body['description'] ?? 'Login failed',
+          success: false,
+          message: body['message'] ?? 'Login failed',
+        );
+      }
+
+      return ApiResponse(
+        data: UserSession.fromJson(body),
+        message: body['message'] ?? 'Login successful',
+        success: true,
+      );
+
+    } catch (e) {
+      return ApiResponse(
+        error: e.toString(),
         success: false,
-        error: "Invalid email or password",
-        message: "Please try again.",
+        message: 'An error occurred while trying to login',
       );
     }
   }
