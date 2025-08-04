@@ -32,10 +32,18 @@ class LogDto extends Log {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'employee': (employee as EmployeeDto).toJson(),
+      'employee_id': employee.id,
       'time_in': timeIn.toIso8601String(),
       'time_out': timeOut.toIso8601String(),
     };
   }
 
+  //Without id
+  Map<String, dynamic> toJsonWithoutId() {
+    return {
+      'employee_id': employee.id,
+      'time_in': timeIn.toIso8601String(),
+      'time_out': timeOut.toIso8601String(),
+    };
+  }
 }

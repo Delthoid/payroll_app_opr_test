@@ -17,3 +17,12 @@ class LoadLogs extends LogEvent {
   @override
   List<Object?> get props => [selectedEmployee, timeInDate, timeOutDate];
 }
+
+class AddLogEvent extends LogEvent {
+  final LogDto log;
+
+  const AddLogEvent(this.log);
+
+  @override
+  List<Object?> get props => [log];
+} 

@@ -95,7 +95,7 @@ class SqlService {
 
         await db.execute('''
           CREATE TABLE logs (
-            id TEXT PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             employee_id INTEGER NOT NULL,
             time_in TEXT NOT NULL,
             time_out TEXT NOT NULL,

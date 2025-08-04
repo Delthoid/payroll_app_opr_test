@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:payroll_app_opr_test/core/utils/dialog_utils.dart';
 import 'package:payroll_app_opr_test/core/utils/formatters.dart';
 import 'package:payroll_app_opr_test/data/dto/employee/employee_dto.dart';
+import 'package:payroll_app_opr_test/data/dto/log/log_dto.dart';
 import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/presentation/employee_logs/bloc/employee_logs_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employee_logs/pages/bloc/log_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
 
@@ -29,7 +32,26 @@ class _CreateLogState extends State<CreateLog> {
       appBar: AppBar(title: const Text('Create Log')),
       body: BlocConsumer<LogBloc, LogState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is LogLoading) {
+            DialogUtils.showLoadingDialog(context: context, message: 'Creating log...');
+          }
+
+          if (state is LogSuccess) {
+            context.read<EmployeeLogsBloc>().add(AddLocalLog(state.log));
+            Navigator.pop(context);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
+
+          if (state is LogError) {
+            
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
         },
         builder: (context, state) {
           return SingleChildScrollView(
@@ -90,6 +112,7 @@ class _CreateLogState extends State<CreateLog> {
                     TextFormField(
                       readOnly: true,
                       controller: _timeInController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (_timeIn == null) {
                           return 'Please select a time in';
@@ -151,6 +174,7 @@ class _CreateLogState extends State<CreateLog> {
                     TextFormField(
                       readOnly: true,
                       controller: _timeOutController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (_timeOut == null) {
                           return 'Please select a time out';
@@ -220,15 +244,25 @@ class _CreateLogState extends State<CreateLog> {
                       width: double.infinity,
                       child: FilledButton(
                         onPressed: () {
+
+                          if (_selectedEmployee == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Please select an employee')),
+                            );
+                            return;
+                          }
+
                           if (_formKey.currentState?.validate() ?? false) {
                             context.read<LogBloc>().add(
-                              LoadLogs(
-                                selectedEmployee: (state as LogInitial).selectedEmployee,
-                                timeInDate: _timeIn,
-                                timeOutDate: _timeOut,
+                              AddLogEvent(
+                                LogDto(
+                                  id: '0',
+                                  employee: _selectedEmployee ?? Employee.empty(),
+                                  timeIn: _timeIn ?? DateTime.now(),
+                                  timeOut: _timeOut ?? DateTime.now(),
+                                ),
                               ),
                             );
-                            Navigator.pop(context);
                           }
                         },
                         child: const Text('Submit'),

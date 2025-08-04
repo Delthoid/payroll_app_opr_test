@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:payroll_app_opr_test/core/utils/formatters.dart';
+import 'package:payroll_app_opr_test/core/widgets/error_container.dart';
+import 'package:payroll_app_opr_test/presentation/employee_logs/bloc/employee_logs_bloc.dart';
 import 'package:payroll_app_opr_test/router/router.dart';
 
 class EmployeeLogsPage extends StatefulWidget {
@@ -17,6 +21,9 @@ class _EmployeeLogsPageState extends State<EmployeeLogsPage> {
       appBar: AppBar(
         title: const Text('Employee Logs'),
         actions: [
+          IconButton(onPressed: () {
+            context.read<EmployeeLogsBloc>().add(LoadEmployeeLogs());
+          }, icon: const Icon(Icons.refresh)),
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
@@ -25,49 +32,89 @@ class _EmployeeLogsPageState extends State<EmployeeLogsPage> {
           ),
         ],
       ),
-      body: ListView.separated(
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: ListTile(
-              title: Text('John Doe', style: theme.textTheme.titleMedium),
-              trailing: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child: Text(
-                      '8.12',
-                      style: TextStyle(color: Colors.white),
+      body: BlocConsumer<EmployeeLogsBloc, EmployeeLogsState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          if (state is EmployeeLogsLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is EmployeeLogsError) {
+            return Center(
+              child: ErrorContainer(errorMessage: state.message),
+            );
+          }
+
+          if (state is EmployeeLogsLoaded) {
+
+            if (state.logs.isEmpty) {
+              return const Center(child: Text('No logs available'));
+            }
+
+            return ListView.separated(
+              itemBuilder: (context, index) {
+                final log = state.logs[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: ListTile(
+                    title: Text('${log.employee.firstName} ${log.employee.lastName}', style: theme.textTheme.titleMedium),
+                    trailing: Container(
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primary,
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                '${log.hoursWorked} hrs',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 75,
+                              child: Text(
+                                'Time In',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            Text('${Formatters.formatTime(log.timeIn)} | ${Formatters.formatDate(log.timeIn)}', style: TextStyle()),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 75,
+                              child: Text(
+                                'Time Out',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            Text('${Formatters.formatTime(log.timeOut)} | ${Formatters.formatDate(log.timeOut)}', style: TextStyle()),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  Text('Hours', style: TextStyle(color: Colors.grey)),
-                ],
-              ),
-              subtitle: Column(
-                children: [
-            
-                  Row(
-                    children: [
-                      SizedBox(width: 75, child: Text('Time In', style: TextStyle(color: Colors.grey))),
-                      const SizedBox(width: 20),
-                      Text('7:48AM | Aug 12, 2025', style: TextStyle()),
-                    ],
-                  ),
-            
-                  Row(
-                    children: [
-                      SizedBox(width: 75, child: Text('Time Out', style: TextStyle(color: Colors.grey))),
-                      const SizedBox(width: 20),
-                      Text('5:00PM | Aug 12, 2025', style: TextStyle()),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
+                );
+              },
+              separatorBuilder: (context, index) => const Divider(),
+              itemCount: state.logs.length,
+            );
+          }
+
+          return const Center(child: Text('No logs available'));
         },
-        separatorBuilder: (context, index) => const Divider(),
-        itemCount: 10,
       ),
     );
   }
