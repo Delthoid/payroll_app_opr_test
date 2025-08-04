@@ -1,30 +1,33 @@
 class Employee {
   final String id;
-  final String name;
+  final String firstName;
+  final String lastName;
+  final String email;
   final String position;
   final double salary;
 
   Employee({
     required this.id,
-    required this.name,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
     required this.position,
     required this.salary,
   });
 
-  @override
-  String toString() {
-    return 'Employee{id: $id, name: $name, position: $position, salary: $salary}';
-  }
-
   Employee copyWith({
     String? id,
-    String? name,
+    String? firstName,
+    String? lastName,
+    String? email,
     String? position,
     double? salary,
   }) {
     return Employee(
       id: id ?? this.id,
-      name: name ?? this.name,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
       position: position ?? this.position,
       salary: salary ?? this.salary,
     );

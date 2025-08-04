@@ -4,6 +4,8 @@ import 'package:sqflite/sqflite.dart';
 class SqlService {
   Database? _database;
 
+  Database? get instance => _database;
+
   Future<Database> get database async {
     _database ??= await _initDatabase();
     return _database!;
@@ -83,7 +85,9 @@ class SqlService {
         await db.execute('''
           CREATE TABLE employees (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
+            first_name TEXT NOT NULL,
+            last_name TEXT NOT NULL,
+            email TEXT NOT NULL,
             position TEXT NOT NULL,
             salary REAL NOT NULL
           )
