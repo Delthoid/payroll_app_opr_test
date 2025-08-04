@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:payroll_app_opr_test/data/services/session_service.dart';
 import 'package:payroll_app_opr_test/presentation/auth/pages/auth_page.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employees_page.dart';
+import 'package:payroll_app_opr_test/presentation/home/home_page.dart';
 import 'package:payroll_app_opr_test/presentation/payroll_generate/pages/payroll_generate_page.dart';
 
 class RouteNames {
@@ -28,12 +29,12 @@ class AppRouter {
       final getSession = GetIt.instance<SessionService>();
       final isLoggedIn = await getSession.getCurrentSession() != null;
 
-      if (isLoggedIn && state.fullPath == RouteNames.home) {
-        return RouteNames.home;
+      if (isLoggedIn && state.fullPath == RoutePaths.login) {
+        return RoutePaths.home;
       }
 
       if (!isLoggedIn) {
-        return RouteNames.login;
+        return RoutePaths.login;
       }
 
       return state.fullPath;
@@ -43,7 +44,7 @@ class AppRouter {
       GoRoute(
         path: RoutePaths.home,
         name: RouteNames.home,
-        builder: (context, state) => const EmployeesPage(),
+        builder: (context, state) => const HomePage(),
       ),
       GoRoute(
         path: RoutePaths.login,

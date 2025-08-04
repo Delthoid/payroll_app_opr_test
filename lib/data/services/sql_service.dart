@@ -79,6 +79,15 @@ class SqlService {
             workdays TEXT NOT NULL
             )
         ''');
+
+        await db.execute('''
+          CREATE TABLE employees (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            position TEXT NOT NULL,
+            salary REAL NOT NULL
+          )
+        ''');
       },
     );
   }
