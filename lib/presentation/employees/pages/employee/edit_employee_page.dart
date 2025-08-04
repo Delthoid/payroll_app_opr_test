@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:payroll_app_opr_test/core/utils/dialog_utils.dart';
 import 'package:payroll_app_opr_test/core/utils/validators.dart';
 import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
 
 class EditEmployeePage extends StatefulWidget {
@@ -38,6 +39,9 @@ class _EditEmployeePageState extends State<EditEmployeePage> {
         if (state is EmployeeUpdated) {
           Navigator.of(context).pop(); // Close loading dialog
           Navigator.of(context).pop(); // Go back to employee list
+          context.read<EmployeesBloc>().add(
+            UpdateLocalEmployeeEvent(state.employee),
+          );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );

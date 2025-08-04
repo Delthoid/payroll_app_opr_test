@@ -26,5 +26,16 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
         emit(EmployeesError(response.error ?? 'An error occurred'));
       }
     });
+
+    on<UpdateLocalEmployeeEvent>((event, emit) {
+      if (state is EmployeesLoaded) {
+        final currentState = state as EmployeesLoaded;
+        final updatedEmployees = currentState.employees.map((employee) {
+          return employee.id == event.employee.id ? event.employee : employee;
+        }).toList();
+        
+        emit(EmployeesLoaded(updatedEmployees));
+      }
+    });
   }
 }
