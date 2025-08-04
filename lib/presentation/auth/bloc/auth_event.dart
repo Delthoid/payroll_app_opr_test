@@ -7,5 +7,8 @@ final class AuthLoginRequest extends AuthEvent {
   final String email;
   final String password;
 
-  AuthLoginRequest(this.email, this.password);
+  AuthLoginRequest({
+    required this.email,
+    required this.password,
+  });
 }
