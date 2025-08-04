@@ -59,7 +59,7 @@ class AppRouter {
       GoRoute(
         path: RoutePaths.employeeList,
         name: RouteNames.employeeList,
-        builder: (context, state) => const EmployeesPage(),
+        builder: (context, state) => EmployeesPage(),
         routes: [
           GoRoute(
             path: RoutePaths.employeeCreate,

@@ -12,7 +12,7 @@ class EmployeeDto extends Employee {
 
   factory EmployeeDto.fromJson(Map<String, dynamic> json) {
     return EmployeeDto(
-      id: json['id'] as String,
+      id: (json['id'] ?? 0).toString(),
       firstName: json['first_name'] as String,
       lastName: json['last_name'] as String,
       email: json['email'] as String,

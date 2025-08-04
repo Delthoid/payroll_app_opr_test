@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:payroll_app_opr_test/core/utils/validators.dart';
 import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
 
 class AddNewEmployeePage extends StatefulWidget {
@@ -43,6 +44,7 @@ class _AddNewEmployeePageState extends State<AddNewEmployeePage> {
         }
 
         if (state is EmployeeSuccess) {
+          context.read<EmployeesBloc>().add(LoadEmployeesEvent());
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(

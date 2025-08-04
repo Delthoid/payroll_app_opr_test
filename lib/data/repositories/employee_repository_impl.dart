@@ -1,13 +1,15 @@
 import 'package:payroll_app_opr_test/core/models/api_response.dart';
 import 'package:payroll_app_opr_test/data/dto/employee/employee_dto.dart';
 import 'package:payroll_app_opr_test/data/services/employee_service.dart';
+import 'package:payroll_app_opr_test/data/services/employees_service.dart';
 import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
 import 'package:payroll_app_opr_test/domain/repositories/employee_repository.dart';
 
 class EmployeeRepositoryImpl implements EmployeeRepository {
   final EmployeeService _employeeService;
+  final EmployeesService _employeesService;
 
-  EmployeeRepositoryImpl(this._employeeService);
+  EmployeeRepositoryImpl(this._employeeService, this._employeesService);
 
   @override
   Future<ApiResponse<Employee>> addEmployee(Employee employee) {
@@ -37,8 +39,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
   @override
   Future<ApiResponse<List<Employee>>> getEmployees() {
-    // TODO: implement getEmployees
-    throw UnimplementedError();
+    return _employeesService.getEmployees();
   }
 
   @override
