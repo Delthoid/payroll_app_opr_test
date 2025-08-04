@@ -14,3 +14,9 @@ final class GetEmployeeEvent extends EmployeeEvent {
 
   GetEmployeeEvent({required this.employeeId});
 }
+
+final class DeleteEmployeeEvent extends EmployeeEvent {
+  final Employee employee;
+
+  DeleteEmployeeEvent({required this.employee});
+}

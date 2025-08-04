@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:payroll_app_opr_test/core/utils/dialog_utils.dart';
 import 'package:payroll_app_opr_test/core/widgets/error_container.dart';
+import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
 
 class EmployeeDetailsPage extends StatefulWidget {
@@ -17,9 +19,32 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Employee Details')),
+
       body: BlocConsumer<EmployeeBloc, EmployeeState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is EmployeeDeleting) {
+            DialogUtils.showLoadingDialog(
+              context: context,
+              message: 'Deleting employee...',
+              barrierDismissible: false,
+            );
+          }
+
+          if (state is EmployeeDeleted) {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+            context.read<EmployeesBloc>().add(LoadEmployeesEvent());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
+
+          if (state is EmployeeDetailsError) {
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
         },
         builder: (context, state) {
           if (state is EmployeeLoading || state is EmployeeInitial) {
@@ -30,7 +55,7 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
             return Center(child: ErrorContainer(errorMessage: state.message));
           }
 
-          if (state is EmployeeLoaded) {
+          if (state is EmployeeLoaded && state is! EmployeeDeleted) {
             return SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -56,16 +81,14 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         spacing: 4,
                         children: [
-                          Hero(
-                            tag: state.employee.id,
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundColor: theme.colorScheme.primary,
-                              child: Text(
-                                '${state.employee.firstName[0]}${state.employee.lastName[0]}'.toUpperCase(),
-                                style: theme.textTheme.displaySmall?.copyWith(
-                                  color: Colors.white,
-                                ),
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundColor: theme.colorScheme.primary,
+                            child: Text(
+                              '${state.employee.firstName[0]}${state.employee.lastName[0]}'
+                                  .toUpperCase(),
+                              style: theme.textTheme.displaySmall?.copyWith(
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -85,7 +108,7 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
                                 color: theme.colorScheme.onPrimaryContainer,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -97,8 +120,37 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
                     ),
                     ListTile(
                       leading: const Icon(Icons.attach_money),
-                      title: Text('\$${state.employee.salary.toStringAsFixed(2)}'),
+                      title: Text(
+                        '\$${state.employee.salary.toStringAsFixed(2)}',
+                      ),
                       subtitle: Text('Salary'),
+                    ),
+
+                    const Divider(),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red[500],
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () async {
+
+                          final confirm = await DialogUtils.showConfirmationDialog(
+                            context: context,
+                            title: 'Delete Employee',
+                            content: 'Are you sure you want to delete this employee?',
+                          );
+
+                          if (confirm ?? false) {
+                            context.read<EmployeeBloc>().add(
+                              DeleteEmployeeEvent(employee: state.employee),
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.delete),
+                        label: const Text('Delete Employee'),
+                      ),
                     ),
                   ],
                 ),

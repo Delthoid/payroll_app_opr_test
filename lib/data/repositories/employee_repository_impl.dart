@@ -27,8 +27,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
   @override
   Future<ApiResponse<void>> deleteEmployee(String id) {
-    // TODO: implement deleteEmployee
-    throw UnimplementedError();
+    return _employeeService.deleteEmployee(id);
   }
 
   @override

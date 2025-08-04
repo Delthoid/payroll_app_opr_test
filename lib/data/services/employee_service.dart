@@ -59,4 +59,34 @@ class EmployeeService {
       );
     }
   }
+
+  Future<ApiResponse<void>> deleteEmployee(String id) async {
+    try {
+      final db = await _sqlService.database;
+      final int count = await db.delete(
+        'employees',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+      if (count > 0) {
+        return ApiResponse(
+          success: true,  
+          message: 'Employee deleted successfully',
+        );
+      } else {
+        return ApiResponse(
+          error: 'Employee not found',
+          success: false,
+          message: 'No employee found with id $id',
+        );
+      }
+    } catch (e) {
+      return ApiResponse(
+        error: 'Database error',
+        success: false,
+        message: 'Error deleting employee: $e',
+      );
+    }
+  }
 }

@@ -32,4 +32,16 @@ class Employee {
       salary: salary ?? this.salary,
     );
   }
+
+  // empty
+  static Employee empty() {
+    return Employee(
+      id: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      position: '',
+      salary: 0.0,
+    );
+  }
 }

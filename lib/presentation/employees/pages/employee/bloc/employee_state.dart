@@ -19,6 +19,15 @@ final class EmployeeLoaded extends EmployeeState {
   EmployeeLoaded(this.employee);
 }
 
+final class EmployeeDeleting extends EmployeeLoaded {
+  EmployeeDeleting(super.employee);
+}
+
+final class EmployeeDeleted extends EmployeeLoaded {
+  final String message;
+  EmployeeDeleted(this.message) : super(Employee.empty());
+}
+
 final class EmployeeDetailsError extends EmployeeState {
   final String message;
 

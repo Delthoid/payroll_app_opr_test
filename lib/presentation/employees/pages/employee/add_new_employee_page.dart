@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:payroll_app_opr_test/core/utils/dialog_utils.dart';
 import 'package:payroll_app_opr_test/core/utils/validators.dart';
 import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
 import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
@@ -26,21 +27,7 @@ class _AddNewEmployeePageState extends State<AddNewEmployeePage> {
     return BlocConsumer<EmployeeBloc, EmployeeState>(
       listener: (context, state) {
         if (state is EmployeeLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (context) {
-              return AlertDialog(
-                content: Row(
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(width: 20),
-                    Text('Adding Employee...'),
-                  ],
-                ),
-              );
-            },
-          );
+          DialogUtils.showLoadingDialog(context: context, message: 'Adding employee...');
         }
 
         if (state is EmployeeSuccess) {

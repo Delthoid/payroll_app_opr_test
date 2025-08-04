@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/add_employee.dart';
+import 'package:payroll_app_opr_test/domain/use_cases/employee/delete_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/get_employee.dart';
 
 part 'employee_event.dart';
@@ -12,6 +13,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
 
   final AddEmployee addEmployee = GetIt.instance<AddEmployee>();
   final GetEmployee getEmployee = GetIt.instance<GetEmployee>();
+  final DeleteEmployee deleteEmployee = GetIt.instance<DeleteEmployee>();
 
   EmployeeBloc() : super(EmployeeInitial()) {
     on<EmployeeEvent>((event, emit) {
@@ -41,6 +43,21 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         }
       } catch (e) {
         emit(EmployeeDetailsError('Failed to load employee'));
+      }
+    });
+
+    on<DeleteEmployeeEvent>((event, emit) async {
+      try {
+        emit(EmployeeDeleting(event.employee));
+        
+        final result = await deleteEmployee.call(event.employee.id);
+        if(result.success) {
+          emit(EmployeeDeleted(result.message ?? 'Employee deleted successfully'));
+        } else {
+          emit(EmployeeDetailsError('Failed to delete employee'));
+        }
+      } catch (e) {
+        emit(EmployeeDetailsError('Failed to delete employee'));
       }
     });
   }

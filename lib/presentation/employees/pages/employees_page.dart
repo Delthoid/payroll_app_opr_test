@@ -15,9 +15,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<EmployeesBloc, EmployeesState>(
-      listener: (context, state) {
-        
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -59,37 +57,43 @@ class _EmployeesPageState extends State<EmployeesPage> {
                         },
                       ),
 
-                      Text('Showing ${state.employees.length} employees'),
+                      if (state.employees.isEmpty)
+                        const Center(child: Text('No employees found')),
+                      if (state.employees.isNotEmpty) ...[
+                        Text('Showing ${state.employees.length} employees'),
 
-                      Expanded(
-                        child: ListView.separated(
-                          itemBuilder: (context, index) {
-                            final employee = state.employees[index];
-                            return ListTile(
-                              leading: Hero(
-                                tag: employee.id,
-                                child: CircleAvatar(
-                                  child: Text('${employee.firstName[0]}${employee.lastName[0]}'.toUpperCase()),
+                        Expanded(
+                          child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              final employee = state.employees[index];
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  child: Text(
+                                    '${employee.firstName[0]}${employee.lastName[0]}'
+                                        .toUpperCase(),
+                                  ),
                                 ),
-                              ),
-                              title: Text(employee.firstName),
-                              subtitle: Text(employee.position),
-                              onTap: () {
-                                context.pushNamed(
-                                  RouteNames.employeeDetails,
-                                  pathParameters: {'id': employee.id},
-                                  queryParameters: {'name': employee.firstName},
-                                );
-                              },
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return Divider();
-                          },
-                          shrinkWrap: true,
-                          itemCount: state.employees.length,
+                                title: Text(employee.firstName),
+                                subtitle: Text(employee.position),
+                                onTap: () {
+                                  context.pushNamed(
+                                    RouteNames.employeeDetails,
+                                    pathParameters: {'id': employee.id},
+                                    queryParameters: {
+                                      'name': employee.firstName,
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider();
+                            },
+                            shrinkWrap: true,
+                            itemCount: state.employees.length,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 );
