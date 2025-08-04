@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:payroll_app_opr_test/core/bloc_observer.dart';
 import 'package:payroll_app_opr_test/di.dart';
 import 'package:payroll_app_opr_test/presentation/auth/bloc/auth_bloc.dart';
+import 'package:payroll_app_opr_test/presentation/employee_logs/pages/bloc/log_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/home/cubit/home_page_cubit.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => HomePageCubit()),
         BlocProvider(create: (context) => EmployeesBloc()..add(LoadEmployeesEvent())),
         BlocProvider(create: (context) => EmployeeBloc()),
+        BlocProvider(create: (context) => LogBloc()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

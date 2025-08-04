@@ -92,6 +92,16 @@ class SqlService {
             hourly_rate REAL NOT NULL
           )
         ''');
+
+        await db.execute('''
+          CREATE TABLE logs (
+            id TEXT PRIMARY KEY,
+            employee_id INTEGER NOT NULL,
+            time_in TEXT NOT NULL,
+            time_out TEXT NOT NULL,
+            FOREIGN KEY (employee_id) REFERENCES employees (id)
+          )
+        ''');
       },
     );
   }

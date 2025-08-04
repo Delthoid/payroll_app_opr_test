@@ -42,4 +42,15 @@ class EmployeeDto extends Employee {
       'hourly_rate': hourlyRate,
     };
   }
+
+  Employee toEntity() {
+    return Employee(
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      position: position,
+      hourlyRate: hourlyRate,
+    );
+  }
 }

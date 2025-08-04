@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:payroll_app_opr_test/data/services/session_service.dart';
 import 'package:payroll_app_opr_test/presentation/auth/pages/auth_page.dart';
+import 'package:payroll_app_opr_test/presentation/employee_logs/pages/create_log.dart';
+import 'package:payroll_app_opr_test/presentation/employee_logs/pages/employee_logs_page.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/add_new_employee_page.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/edit_employee_page.dart';
@@ -20,6 +22,9 @@ class RouteNames {
   static const String employeeDetails = 'employeeDetails';
   static const String employeeEdit = 'employeeEdit';
   static const String payroll = 'payroll';
+
+  static const String employeeLogs = 'employeeLogs';
+  static const String createLog = 'createLog';
 }
 
 class RoutePaths {
@@ -30,6 +35,9 @@ class RoutePaths {
   static const String employeeDetails = '/employeeDetails/:id';
   static const String employeeEdit = '/employeeEdit/:employeeId';
   static const String payroll = '/payroll';
+
+  static const String employeeLogs = '/employeeLogs';
+  static const String createLog = '/createLog';
 }
 
 class AppRouter {
@@ -97,6 +105,17 @@ class AppRouter {
                 },
               ),
             ]
+          ),
+        ],
+      ),
+      GoRoute(path: RoutePaths.employeeLogs,
+        name: RouteNames.employeeLogs,
+        builder: (context, state) => const EmployeeLogsPage(),
+        routes: [
+          GoRoute(
+            path: RoutePaths.createLog,
+            name: RouteNames.createLog,
+            builder: (context, state) => const CreateLog(),
           ),
         ],
       ),
