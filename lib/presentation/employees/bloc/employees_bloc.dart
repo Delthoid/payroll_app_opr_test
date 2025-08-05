@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
-import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/domain/entities/employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employees/get_employees.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employees/search_employees.dart';
 

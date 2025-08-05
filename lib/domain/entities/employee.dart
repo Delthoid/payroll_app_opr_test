@@ -8,7 +8,7 @@ class Employee extends Equatable {
   final String position;
   final double hourlyRate;
 
-  Employee({
+  const Employee({
     required this.id,
     required this.firstName,
     required this.lastName,

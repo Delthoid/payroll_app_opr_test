@@ -1,4 +1,4 @@
-import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/domain/entities/employee.dart';
 
 class Log {
   final String id;

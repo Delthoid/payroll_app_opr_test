@@ -23,6 +23,15 @@ class _EmployeesPageState extends State<EmployeesPage> {
             title: const Text('Employees'),
             actions: [
               Tooltip(
+                message: 'Refresh Employees',
+                child: IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () {
+                    context.read<EmployeesBloc>().add(LoadEmployeesEvent());
+                  },
+                ),
+              ),
+              Tooltip(
                 message: 'Add Employee',
                 child: IconButton(
                   icon: const Icon(Icons.person_add),

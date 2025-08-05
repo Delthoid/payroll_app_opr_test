@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
-import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/domain/entities/employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/add_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/delete_employee.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/employee/get_employee.dart';

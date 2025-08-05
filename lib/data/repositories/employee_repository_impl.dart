@@ -2,7 +2,7 @@ import 'package:payroll_app_opr_test/core/models/api_response.dart';
 import 'package:payroll_app_opr_test/data/dto/employee/employee_dto.dart';
 import 'package:payroll_app_opr_test/data/services/employee_service.dart';
 import 'package:payroll_app_opr_test/data/services/employees_service.dart';
-import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/domain/entities/employee.dart';
 import 'package:payroll_app_opr_test/domain/repositories/employee_repository.dart';
 
 class EmployeeRepositoryImpl implements EmployeeRepository {

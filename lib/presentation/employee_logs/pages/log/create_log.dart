@@ -4,7 +4,7 @@ import 'package:payroll_app_opr_test/core/utils/dialog_utils.dart';
 import 'package:payroll_app_opr_test/core/utils/formatters.dart';
 import 'package:payroll_app_opr_test/data/dto/employee/employee_dto.dart';
 import 'package:payroll_app_opr_test/data/dto/log/log_dto.dart';
-import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/domain/entities/employee.dart';
 import 'package:payroll_app_opr_test/presentation/employee_logs/bloc/employee_logs_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employee_logs/pages/bloc/log_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';

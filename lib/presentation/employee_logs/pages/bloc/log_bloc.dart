@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:payroll_app_opr_test/data/dto/log/log_dto.dart';
-import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/domain/entities/employee.dart';
 import 'package:payroll_app_opr_test/domain/entities/log.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/logs/add_log.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/logs/delete_log.dart';

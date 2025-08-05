@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:payroll_app_opr_test/core/utils/dialog_utils.dart';
 import 'package:payroll_app_opr_test/core/utils/validators.dart';
-import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/domain/entities/employee.dart';
 import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
 
@@ -46,26 +46,6 @@ class _AddNewEmployeePageState extends State<AddNewEmployeePage> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(title: const Text('Add New Employee')),
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              if (_formKey.currentState?.validate() ?? false) {
-                context.read<EmployeeBloc>().add(
-                  AddEmployeeEvent(
-                    employee: Employee(
-                      firstName: _firstNameController.text,
-                      lastName: _lastNameController.text,
-                      email: _emailController.text,
-                      position: _positionController.text,
-                      hourlyRate: double.parse(_hourlyRateController.text),
-                      id: '',
-                    ),
-                  ),
-                );
-              }
-            },
-            icon: const Icon(Icons.save),
-            label: const Text('Save'),
-          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -149,6 +129,28 @@ class _AddNewEmployeePageState extends State<AddNewEmployeePage> {
 
                         return null;
                       },
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            context.read<EmployeeBloc>().add(
+                              AddEmployeeEvent(
+                                employee: Employee(
+                                  firstName: _firstNameController.text,
+                                  lastName: _lastNameController.text,
+                                  email: _emailController.text,
+                                  position: _positionController.text,
+                                  hourlyRate: double.parse(_hourlyRateController.text),
+                                  id: '',
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: const Text('Save Employee'),
+                      ),
                     ),
                   ],
                 ),

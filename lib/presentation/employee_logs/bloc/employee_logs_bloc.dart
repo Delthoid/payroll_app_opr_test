@@ -2,10 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:payroll_app_opr_test/data/services/session_service.dart';
-import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/domain/entities/employee.dart';
 import 'package:payroll_app_opr_test/domain/entities/log.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/logs/get_logs.dart';
-import 'package:payroll_app_opr_test/presentation/employee_logs/pages/bloc/log_bloc.dart';
 
 part 'employee_logs_event.dart';
 part 'employee_logs_state.dart';
