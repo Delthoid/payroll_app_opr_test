@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:payroll_app_opr_test/core/utils/formatters.dart';
+import 'package:payroll_app_opr_test/core/widgets/error_container.dart';
+import 'package:payroll_app_opr_test/presentation/payroll_period/bloc/payroll_periods_bloc.dart';
 import 'package:payroll_app_opr_test/router/router.dart';
 
 class PayrollPeriodPage extends StatefulWidget {
@@ -11,9 +15,6 @@ class PayrollPeriodPage extends StatefulWidget {
 
 class _PayrollPeriodPageState extends State<PayrollPeriodPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _dateRangeController = TextEditingController();
-
-  DateTimeRange? _selectedDateRange;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,9 @@ class _PayrollPeriodPageState extends State<PayrollPeriodPage> {
       appBar: AppBar(
         title: const Text('Payroll Periods'),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.refresh)),
+          IconButton(onPressed: () {
+            context.read<PayrollPeriodsBloc>().add(LoadPayrollPeriods());
+          }, icon: const Icon(Icons.refresh)),
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
@@ -30,36 +33,73 @@ class _PayrollPeriodPageState extends State<PayrollPeriodPage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            spacing: 12,
-            children: [
-              TextFormField(
-                controller: _dateRangeController,
-                decoration: InputDecoration(hintText: 'Select Date Range'),
-                onTap: () {
-                  showDateRangePicker(
-                    context: context,
-                    firstDate: DateTime.now().subtract(
-                      const Duration(days: 30),
-                    ),
-                    lastDate: DateTime.now().add(const Duration(days: 30)),
-                  ).then((value) {
-                    if (value != null) {
-                      setState(() {
-                        _selectedDateRange = value;
-                        _dateRangeController.text =
-                            '${value.start} - ${value.end}';
-                      });
-                    }
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
+      body: BlocConsumer<PayrollPeriodsBloc, PayrollPeriodsState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+
+          if (state is PayrollPeriodsLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (state is PayrollPeriodsError) {
+            return Center(
+              child: ErrorContainer(errorMessage: state.message),
+            );
+          }
+
+          if (state is PayrollPeriodsLoaded) {
+            if (state.periods.isEmpty) {
+              return Center(
+                child: Text('No payroll periods available.'),
+              );
+            }
+
+            return ListView.builder(
+              itemCount: state.periods.length,
+              itemBuilder: (context, index) {
+                final period = state.periods[index];
+
+                return ListTile(
+                  title: period.remarks.isEmpty ? null : Text(period.remarks),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      
+                      Text('${Formatters.formatDate(period.startDate)} - ${Formatters.formatDate(period.endDate)}'),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                        
+                          decoration: BoxDecoration(
+                            color: period.isPaid ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(4.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
+                            child: Text(
+                              period.isPaid ? 'Paid' : 'Unpaid',
+                              style: TextStyle(
+                                color: period.isPaid ? Colors.green : Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+
+          return Center(
+            child: Text('Unexpected state: $state'),
+          );
+        },
       ),
     );
   }

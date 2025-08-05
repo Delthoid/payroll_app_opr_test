@@ -19,8 +19,9 @@ class PayrollPeriodService {
         payrollPeriod.toJsonWithoutId(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
+      final latest = await getLatestPayrollPeriod();
       return ApiResponse(
-        data: payrollPeriod.toEntity(),
+        data: latest.data,
         success: true,
         message: 'Payroll period created successfully',
       );
@@ -29,6 +30,39 @@ class PayrollPeriodService {
         data: PayrollPeriod.empty(),
         success: false,
         message: 'Failed to create payroll period: $e',
+      );
+    }
+  }
+
+  // get latest payroll period
+  Future<ApiResponse<PayrollPeriod>> getLatestPayrollPeriod() async {
+    try {
+      final db = await _sqlService.database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'payroll_periods',
+        orderBy: 'id DESC',
+        limit: 1,
+      );
+
+      if (maps.isEmpty) {
+        return ApiResponse(
+          data: PayrollPeriod.empty(),
+          success: true,
+          message: 'No payroll periods found',
+        );
+      }
+
+      final payrollPeriod = PayrollPeriodDto.fromJson(maps.first).toEntity();
+      return ApiResponse(
+        data: payrollPeriod,
+        success: true,
+        message: 'Latest payroll period retrieved successfully',
+      );
+    } catch (e) {
+      return ApiResponse(
+        data: PayrollPeriod.empty(),
+        success: false,
+        message: 'Failed to retrieve latest payroll period: $e',
       );
     }
   }

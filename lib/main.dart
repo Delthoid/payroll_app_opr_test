@@ -8,6 +8,8 @@ import 'package:payroll_app_opr_test/presentation/employee_logs/pages/bloc/log_b
 import 'package:payroll_app_opr_test/presentation/employees/bloc/employees_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/home/cubit/home_page_cubit.dart';
+import 'package:payroll_app_opr_test/presentation/payroll_period/bloc/payroll_periods_bloc.dart';
+import 'package:payroll_app_opr_test/presentation/payroll_period/pages/bloc/period_bloc.dart';
 import 'package:payroll_app_opr_test/router/router.dart';
 
 void main() {
@@ -33,6 +35,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => EmployeeBloc()),
         BlocProvider(create: (context) => EmployeeLogsBloc()..add(const LoadEmployeeLogs())),
         BlocProvider(create: (context) => LogBloc()),
+        BlocProvider(create: (context) => PayrollPeriodsBloc()..add(LoadPayrollPeriods())),
+        BlocProvider(create: (context) => PeriodBloc()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

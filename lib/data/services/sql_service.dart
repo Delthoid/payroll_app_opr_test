@@ -107,6 +107,8 @@ class SqlService {
         await db.execute('''
           CREATE TABLE payroll_periods (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            remarks TEXT NOT NULL,
+            is_paid INTEGER NOT NULL,
             start_date TEXT NOT NULL,
             end_date TEXT NOT NULL,
             created_at TEXT NOT NULL
