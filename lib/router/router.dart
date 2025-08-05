@@ -12,7 +12,6 @@ import 'package:payroll_app_opr_test/presentation/employees/pages/employee/add_n
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/bloc/employee_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/edit_employee_page.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/employee_details_page.dart';
-import 'package:payroll_app_opr_test/presentation/employees/pages/employees_page.dart';
 import 'package:payroll_app_opr_test/presentation/home/home_page.dart';
 import 'package:payroll_app_opr_test/presentation/payroll_generate/pages/payroll_generate_page.dart';
 
@@ -69,16 +68,6 @@ class AppRouter {
         path: RoutePaths.home,
         name: RouteNames.home,
         builder: (context, state) => const HomePage(),
-      ),
-      GoRoute(
-        path: RoutePaths.login,
-        name: RouteNames.login,
-        builder: (context, state) => const AuthPage(),
-      ),
-      GoRoute(
-        path: RoutePaths.employeeList,
-        name: RouteNames.employeeList,
-        builder: (context, state) => EmployeesPage(),
         routes: [
           GoRoute(
             path: RoutePaths.employeeCreate,
@@ -110,37 +99,43 @@ class AppRouter {
                   return EditEmployeePage();
                 },
               ),
-            ]
-          ),
-        ],
-      ),
-      GoRoute(path: RoutePaths.employeeLogs,
-        name: RouteNames.employeeLogs,
-        builder: (context, state) => const EmployeeLogsPage(),
-        routes: [
-          GoRoute(
-            path: RoutePaths.createLog,
-            name: RouteNames.createLog,
-            builder: (context, state) => const CreateLog(),
+            ],
           ),
           GoRoute(
-            path: RoutePaths.viewLog,
-            name: RouteNames.viewLog,
-            builder: (context, state) => const ViewLog(),
+            path: RoutePaths.employeeLogs,
+            name: RouteNames.employeeLogs,
+            builder: (context, state) => const EmployeeLogsPage(),
             routes: [
               GoRoute(
-                path: RoutePaths.updateLog,
-                name: RouteNames.updateLog,
-                builder: (context, state) => const UpdateLogPage(),
-              )
-            ]
+                path: RoutePaths.createLog,
+                name: RouteNames.createLog,
+                builder: (context, state) => const CreateLog(),
+              ),
+              GoRoute(
+                path: RoutePaths.viewLog,
+                name: RouteNames.viewLog,
+                builder: (context, state) => const ViewLog(),
+                routes: [
+                  GoRoute(
+                    path: RoutePaths.updateLog,
+                    name: RouteNames.updateLog,
+                    builder: (context, state) => const UpdateLogPage(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          GoRoute(
+            path: RoutePaths.payroll,
+            name: RouteNames.payroll,
+            builder: (context, state) => const PayrollGeneratePage(),
           ),
         ],
       ),
       GoRoute(
-        path: RoutePaths.payroll,
-        name: RouteNames.payroll,
-        builder: (context, state) => const PayrollGeneratePage(),
+        path: RoutePaths.login,
+        name: RouteNames.login,
+        builder: (context, state) => const AuthPage(),
       ),
     ],
   );

@@ -76,7 +76,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                         .toUpperCase(),
                                   ),
                                 ),
-                                title: Text(employee.firstName),
+                                title: Text('${employee.firstName} ${employee.lastName}'),
                                 subtitle: Text(employee.position),
                                 onTap: () {
                                   context.read<EmployeeBloc>().add(
