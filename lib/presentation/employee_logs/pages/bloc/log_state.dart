@@ -41,3 +41,12 @@ final class LogError extends LogInitial {
   @override
   List<Object?> get props => [message , selectedEmployee, timeInDate, timeOutDate];
 }
+
+final class LogLoaded extends LogState {
+  final Log log;
+
+  const LogLoaded({required this.log});
+
+  @override
+  List<Object?> get props => [log];
+}

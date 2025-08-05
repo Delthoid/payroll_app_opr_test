@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:payroll_app_opr_test/core/utils/formatters.dart';
 import 'package:payroll_app_opr_test/core/widgets/error_container.dart';
 import 'package:payroll_app_opr_test/presentation/employee_logs/bloc/employee_logs_bloc.dart';
+import 'package:payroll_app_opr_test/presentation/employee_logs/pages/bloc/log_bloc.dart';
 import 'package:payroll_app_opr_test/router/router.dart';
 
 class EmployeeLogsPage extends StatefulWidget {
@@ -21,9 +22,12 @@ class _EmployeeLogsPageState extends State<EmployeeLogsPage> {
       appBar: AppBar(
         title: const Text('Employee Logs'),
         actions: [
-          IconButton(onPressed: () {
-            context.read<EmployeeLogsBloc>().add(LoadEmployeeLogs());
-          }, icon: const Icon(Icons.refresh)),
+          IconButton(
+            onPressed: () {
+              context.read<EmployeeLogsBloc>().add(LoadEmployeeLogs());
+            },
+            icon: const Icon(Icons.refresh),
+          ),
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
@@ -42,13 +46,10 @@ class _EmployeeLogsPageState extends State<EmployeeLogsPage> {
           }
 
           if (state is EmployeeLogsError) {
-            return Center(
-              child: ErrorContainer(errorMessage: state.message),
-            );
+            return Center(child: ErrorContainer(errorMessage: state.message));
           }
 
           if (state is EmployeeLogsLoaded) {
-
             if (state.logs.isEmpty) {
               return const Center(child: Text('No logs available'));
             }
@@ -59,20 +60,23 @@ class _EmployeeLogsPageState extends State<EmployeeLogsPage> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: ListTile(
-                    title: Text('${log.employee.firstName} ${log.employee.lastName}', style: theme.textTheme.titleMedium),
+                    title: Text(
+                      '${log.employee.firstName} ${log.employee.lastName}',
+                      style: theme.textTheme.titleMedium,
+                    ),
                     trailing: Container(
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.primary,
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${log.hoursWorked} hrs',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '${log.hoursWorked} hrs',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -86,7 +90,10 @@ class _EmployeeLogsPageState extends State<EmployeeLogsPage> {
                               ),
                             ),
                             const SizedBox(width: 20),
-                            Text('${Formatters.formatTime(log.timeIn)} | ${Formatters.formatDate(log.timeIn)}', style: TextStyle()),
+                            Text(
+                              '${Formatters.formatTime(log.timeIn)} | ${Formatters.formatDate(log.timeIn)}',
+                              style: TextStyle(),
+                            ),
                           ],
                         ),
 
@@ -100,11 +107,18 @@ class _EmployeeLogsPageState extends State<EmployeeLogsPage> {
                               ),
                             ),
                             const SizedBox(width: 20),
-                            Text('${Formatters.formatTime(log.timeOut)} | ${Formatters.formatDate(log.timeOut)}', style: TextStyle()),
+                            Text(
+                              '${Formatters.formatTime(log.timeOut)} | ${Formatters.formatDate(log.timeOut)}',
+                              style: TextStyle(),
+                            ),
                           ],
                         ),
                       ],
                     ),
+                    onTap: () {
+                      context.read<LogBloc>().add(LoadLogEvent(log));
+                      context.pushNamed(RouteNames.viewLog);
+                    },
                   ),
                 );
               },

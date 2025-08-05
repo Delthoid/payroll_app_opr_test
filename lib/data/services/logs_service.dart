@@ -33,6 +33,7 @@ class LogsService {
     }
   }
 
+  //TODO: Include the employee info here
   Future<ApiResponse<Log>> getById(String id) async {
     final db = await _sqlService.database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -94,9 +95,12 @@ class LogsService {
 
   Future<ApiResponse<Log>> deleteLog({required String logId}) async {
     final db = await _sqlService.database;
-    final log = await getById(logId);
     await db.delete('logs', where: 'id = ?', whereArgs: [logId]);
-    return log;
+    return ApiResponse(
+      data: Log.empty(),
+      success: true,
+      message: 'Log deleted successfully',
+    );
   }
 
   Future<ApiResponse<Log>> updateLog({required LogDto log}) async {

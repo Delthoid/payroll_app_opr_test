@@ -22,6 +22,6 @@ class Log {
 
   double get hoursWorked {
     final duration = timeOut.difference(timeIn);
-    return duration.inHours + (duration.inMinutes % 60) / 60.0;
+    return duration.inMinutes / 60.0;
   }
 }

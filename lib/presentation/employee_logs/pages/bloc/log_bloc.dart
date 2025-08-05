@@ -5,12 +5,14 @@ import 'package:payroll_app_opr_test/data/dto/log/log_dto.dart';
 import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
 import 'package:payroll_app_opr_test/domain/entities/log.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/logs/add_log.dart';
+import 'package:payroll_app_opr_test/domain/use_cases/logs/delete_log.dart';
 
 part 'log_event.dart';
 part 'log_state.dart';
 
 class LogBloc extends Bloc<LogEvent, LogState> {
   final AddLog _addLogUseCase = GetIt.instance<AddLog>();
+  final DeleteLog _deleteLogUseCase = GetIt.instance<DeleteLog>();
 
   LogBloc() : super(LogInitial()) {
     on<LogEvent>((event, emit) {});
@@ -56,6 +58,25 @@ class LogBloc extends Bloc<LogEvent, LogState> {
         }
       } catch (e) {
         emit(LogError(message: 'Failed to create log'));
+      }
+    });
+
+    on<LoadLogEvent>((event, emit) {
+      emit(LogLoaded(log: event.log));
+    });
+
+    on<DeleteLogEvent>((event, emit) async {
+      emit(LogLoading());
+      try {
+        final response = await _deleteLogUseCase.call(logId: event.logId);
+
+        if (response.success) {
+          emit(LogSuccess(log: response.data ?? Log.empty(), message: 'Log deleted successfully'));
+        } else {
+          emit(LogError(message: 'Failed to delete log'));
+        }
+      } catch (e) {
+        emit(LogError(message: 'Failed to delete log'));
       }
     });
   }

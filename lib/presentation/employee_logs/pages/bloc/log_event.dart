@@ -26,3 +26,21 @@ class AddLogEvent extends LogEvent {
   @override
   List<Object?> get props => [log];
 } 
+
+class LoadLogEvent extends LogEvent {
+  final Log log;
+
+  const LoadLogEvent(this.log);
+
+  @override
+  List<Object?> get props => [log];
+}
+
+class DeleteLogEvent extends LogEvent {
+  final String logId;
+
+  const DeleteLogEvent(this.logId);
+
+  @override
+  List<Object?> get props => [logId];
+}
