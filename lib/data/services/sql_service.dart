@@ -102,6 +102,16 @@ class SqlService {
             FOREIGN KEY (employee_id) REFERENCES employees (id)
           )
         ''');
+
+        // payroll period
+        await db.execute('''
+          CREATE TABLE payroll_periods (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            start_date TEXT NOT NULL,
+            end_date TEXT NOT NULL,
+            created_at TEXT NOT NULL
+          )
+        ''');
       },
     );
   }

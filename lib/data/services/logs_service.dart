@@ -2,7 +2,7 @@ import 'package:payroll_app_opr_test/core/models/api_response.dart';
 import 'package:payroll_app_opr_test/data/dto/employee/employee_dto.dart';
 import 'package:payroll_app_opr_test/data/dto/log/log_dto.dart';
 import 'package:payroll_app_opr_test/data/services/sql_service.dart';
-import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
+import 'package:payroll_app_opr_test/domain/entities/employee.dart';
 import 'package:payroll_app_opr_test/domain/entities/log.dart';
 import 'package:sqflite/sqflite.dart';
 

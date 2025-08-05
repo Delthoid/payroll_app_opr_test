@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employee_logs/pages/employee_logs_page.dart';
 import 'package:payroll_app_opr_test/presentation/employees/pages/employees_page.dart';
 import 'package:payroll_app_opr_test/presentation/home/cubit/home_page_cubit.dart';
-import 'package:payroll_app_opr_test/presentation/payroll_generate/pages/payroll_generate_page.dart';
+import 'package:payroll_app_opr_test/presentation/payroll_period/pages/payroll_period_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
             child: switch (index) {
               0 => const EmployeesPage(),
               1 => const EmployeeLogsPage(),
-              2 => const PayrollGeneratePage(),
+              2 => const PayrollPeriodPage(),
               _ => const Center(child: Text('Select a tab')),
             },
           );

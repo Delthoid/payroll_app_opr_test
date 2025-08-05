@@ -9,6 +9,10 @@ class Formatters {
     return DateFormat('MMM d, yyyy').format(dateTime);
   }
 
+  static String formatDateLong(DateTime dateTime) {
+    return DateFormat('MMMM d, yyyy').format(dateTime);
+  }
+
   static String formatDateTime(DateTime dateTime) {
     return '${formatDate(dateTime)} - ${formatTime(dateTime)}';
   }
