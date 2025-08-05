@@ -6,14 +6,14 @@ import 'package:payroll_app_opr_test/domain/entities/payroll_period.dart';
 import 'package:payroll_app_opr_test/presentation/payroll_period/bloc/payroll_periods_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/payroll_period/pages/bloc/period_bloc.dart';
 
-class AddPayrollPeriodPage extends StatefulWidget {
-  const AddPayrollPeriodPage({super.key});
+class UpdatePayrollPeriodPage extends StatefulWidget {
+  const UpdatePayrollPeriodPage({super.key});
 
   @override
-  State<AddPayrollPeriodPage> createState() => _AddPayrollPeriodPageState();
+  State<UpdatePayrollPeriodPage> createState() => _UpdatePayrollPeriodPageState();
 }
 
-class _AddPayrollPeriodPageState extends State<AddPayrollPeriodPage> {
+class _UpdatePayrollPeriodPageState extends State<UpdatePayrollPeriodPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _remarks = TextEditingController();
   final TextEditingController _dateFromController = TextEditingController();
@@ -21,24 +21,49 @@ class _AddPayrollPeriodPageState extends State<AddPayrollPeriodPage> {
 
   DateTime? _startDate;
   DateTime? _endDate;
+  bool _isPaid = false;
+
+  @override
+  void initState() {
+    final state = context.read<PeriodBloc>().state;
+    
+    if (state is PeriodLoaded) {
+      _remarks.text = state.period.remarks ?? '';
+      _startDate = state.period.startDate;
+      _endDate = state.period.endDate;
+      _dateFromController.text = Formatters.formatDateLong(_startDate!);
+      _dateToController.text = Formatters.formatDateLong(_endDate!);
+      _isPaid = state.period.isPaid;
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Payroll Period')),
+      appBar: AppBar(title: const Text('Update Payroll Period')),
       body: BlocConsumer<PeriodBloc, PeriodState>(
         listener: (context, state) {
           if (state is PeriodLoading) {
-            DialogUtils.showLoadingDialog(context: context, message: 'Adding Payroll Period...');
+            DialogUtils.showLoadingDialog(context: context, message: 'Updating Payroll Period...');
+            return;
           }
 
           if (state is PeriodSuccess) {
-            context.read<PayrollPeriodsBloc>().add(LoadPayrollPeriods());
+            if (state.period.id.isEmpty) {
+              context.read<PayrollPeriodsBloc>().add(LoadPayrollPeriods());
+            } else {
+              context.read<PayrollPeriodsBloc>().add(AddLocalPayrollPeriod(state.period));
+            }
+
+            
             Navigator.pop(context);
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Payroll Period Added Successfully')),
+              SnackBar(content: Text(state.message)),
             );
+            return;
           }
 
           if (state is PeriodError) {
@@ -117,24 +142,58 @@ class _AddPayrollPeriodPageState extends State<AddPayrollPeriodPage> {
                     },
                   ),
 
+                  CheckboxListTile(
+                    value: _isPaid,
+                    title: Text('Mark as Paid'),
+                    onChanged: (value) {
+                      setState(() {
+                        _isPaid = value ?? false;
+                      });
+                    },
+                  ),
+
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
                       onPressed: () {
                         if (_formKey.currentState?.validate() ?? false) {
                           context.read<PeriodBloc>().add(
-                            AddPeriodEvent(
+                            UpdatePeriodEvent(
                               PayrollPeriod(
-                                id: '',
+                                id: (state as PeriodLoaded).period.id,
                                 remarks: _remarks.text,
                                 startDate: _startDate!,
                                 endDate: _endDate!,
+                                isPaid: _isPaid,
                               ),
                             ),
                           );
                         }
                       },
-                      child: const Text('Save Payroll Period'),
+                      child: const Text('Update Payroll Period'),
+                    ),
+                  ),
+
+                  const Divider(),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      onPressed: () async {
+                        final confirm = await DialogUtils.showConfirmationDialog(
+                          context: context,
+                          title: 'Delete Payroll Period',
+                          content: 'Are you sure you want to delete this payroll period?',
+                        );
+                        if (confirm == true) {
+                          context.read<PeriodBloc>().add(
+                            DeletePeriodEvent((state as PeriodLoaded).period.id),
+                          );
+                        }
+                      },
+                      child: const Text('Delete Payroll Period'),
                     ),
                   ),
                 ],

@@ -70,7 +70,7 @@ class PayrollPeriodService {
   Future<ApiResponse<List<PayrollPeriod>>> getAllPayrollPeriods() async {
     try {
       final db = await _sqlService.database;
-      final List<Map<String, dynamic>> maps = await db.query('payroll_periods');
+      final List<Map<String, dynamic>> maps = await db.query('payroll_periods', orderBy: 'id DESC');
 
       if (maps.isEmpty) {
         return ApiResponse(

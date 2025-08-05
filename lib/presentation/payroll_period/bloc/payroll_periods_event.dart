@@ -8,3 +8,21 @@ sealed class PayrollPeriodsEvent extends Equatable {
 }
 
 class LoadPayrollPeriods extends PayrollPeriodsEvent {}
+
+class AddLocalPayrollPeriod extends PayrollPeriodsEvent {
+  final PayrollPeriod payrollPeriod;
+
+  const AddLocalPayrollPeriod(this.payrollPeriod);
+
+  @override
+  List<Object> get props => [payrollPeriod];
+}
+
+class RemoveLocalPayrollPeriod extends PayrollPeriodsEvent {
+  final String payrollPeriodId;
+
+  const RemoveLocalPayrollPeriod(this.payrollPeriodId);
+
+  @override
+  List<Object> get props => [payrollPeriodId];
+}

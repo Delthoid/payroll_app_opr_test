@@ -14,6 +14,7 @@ import 'package:payroll_app_opr_test/presentation/employees/pages/employee/edit_
 import 'package:payroll_app_opr_test/presentation/employees/pages/employee/employee_details_page.dart';
 import 'package:payroll_app_opr_test/presentation/home/home_page.dart';
 import 'package:payroll_app_opr_test/presentation/payroll_period/pages/add_payroll_period_page.dart';
+import 'package:payroll_app_opr_test/presentation/payroll_period/pages/edit_payroll_period_page.dart';
 
 class RouteNames {
   static const String home = 'home';
@@ -25,6 +26,7 @@ class RouteNames {
   
   static const String payroll = 'payroll';
   static const String addPayrollPeriod = 'addPayrollPeriod';
+  static const String editPayrollPeriod = 'editPayrollPeriod';
 
   static const String employeeLogs = 'employeeLogs';
   static const String createLog = 'createLog';
@@ -46,6 +48,7 @@ class RoutePaths {
   static const String viewLog = '/viewLog';
   static const String updateLog = '/updateLog';
   static const String addPayrollPeriod = '/addPayrollPeriod';
+  static const String editPayrollPeriod = '/editPayrollPeriod';
 }
 
 class AppRouter {
@@ -132,6 +135,11 @@ class AppRouter {
             path: RoutePaths.addPayrollPeriod,
             name: RouteNames.addPayrollPeriod,
             builder: (context, state) => const AddPayrollPeriodPage(),
+          ),
+          GoRoute(
+            path: RoutePaths.editPayrollPeriod,
+            name: RouteNames.editPayrollPeriod,
+            builder: (context, state) => const UpdatePayrollPeriodPage(),
           ),
         ],
       ),

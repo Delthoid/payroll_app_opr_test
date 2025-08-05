@@ -38,5 +38,31 @@ class PayrollPeriodsBloc extends Bloc<PayrollPeriodsEvent, PayrollPeriodsState> 
         emit(PayrollPeriodsError(message: e.toString()));
       }
     });
+
+    on<AddLocalPayrollPeriod>((event, emit) {
+      if (state is PayrollPeriodsLoaded) {
+        final currentState = state as PayrollPeriodsLoaded;
+
+        // Replace the existing periods with the new one
+        if (currentState.periods.any((p) => p.id == event.payrollPeriod.id)) {
+          final updatedPeriods = currentState.periods.map((p) {
+            return p.id == event.payrollPeriod.id ? event.payrollPeriod : p;
+          }).toList();
+
+          emit(PayrollPeriodsLoaded(periods: updatedPeriods));
+        }
+      }
+    });
+
+    on<RemoveLocalPayrollPeriod>((event, emit) {
+      if (state is PayrollPeriodsLoaded) {
+        final currentState = state as PayrollPeriodsLoaded;
+
+        // Filter out the period to be removed
+        final updatedPeriods = currentState.periods.where((p) => p.id != event.payrollPeriodId).toList();
+
+        emit(PayrollPeriodsLoaded(periods: updatedPeriods));
+      }
+    });
   }
 }

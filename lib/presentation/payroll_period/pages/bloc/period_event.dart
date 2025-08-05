@@ -9,6 +9,15 @@ sealed class PeriodEvent extends Equatable {
 
 class LoadPeriodsEvent extends PeriodEvent {}
 
+class LoadPeriodEvent extends PeriodEvent {
+  final PayrollPeriod period;
+
+  const LoadPeriodEvent({required this.period});
+
+  @override
+  List<Object> get props => [period];
+}
+
 class AddPeriodEvent extends PeriodEvent {
   final PayrollPeriod payrollPeriod;
 

@@ -10,7 +10,6 @@ sealed class PeriodState extends Equatable {
 final class PeriodInitial extends PeriodState {}
 
 final class PeriodLoading extends PeriodState {}
-
 final class PeriodLoaded extends PeriodState {
   final PayrollPeriod period;
   const PeriodLoaded({required this.period});
