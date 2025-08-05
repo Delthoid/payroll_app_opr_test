@@ -72,7 +72,7 @@ class _EmployeeLogsPageState extends State<EmployeeLogsPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          '${log.hoursWorked} hrs',
+                          '${log.hoursWorked.toStringAsFixed(2)} hrs',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

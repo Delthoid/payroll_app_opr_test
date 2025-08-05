@@ -19,8 +19,9 @@ class LogsService {
         log.toJsonWithoutId(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
+      final latest = await getLatestLog();
       return ApiResponse(
-        data: log.toEntity(),
+        data: latest.data,
         success: true,
         message: 'Log inserted successfully',
       );
@@ -109,6 +110,48 @@ class LogsService {
       success: true,
       message: 'Logs retrieved successfully',
     );
+  }
+
+  // Get the latest record
+  Future<ApiResponse<Log>> getLatestLog() async {
+    final db = await _sqlService.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'logs',
+      orderBy: 'id DESC',
+      limit: 1,
+    );
+
+    if (maps.isNotEmpty) {
+      final logMap = maps.first;
+
+      final List<Map<String, dynamic>> employeeMaps = await db.query(
+        'employees',
+        where: 'id = ?',
+        whereArgs: [logMap['employee_id']],
+      );
+      final employee = employeeMaps.isNotEmpty
+          ? EmployeeDto.fromJson(employeeMaps.first)
+          : Employee.empty();
+
+      final log = LogDto(
+        id: (logMap['id'] ?? 0).toString(),
+        employee: employee,
+        timeIn: DateTime.parse(logMap['time_in']),
+        timeOut: DateTime.parse(logMap['time_out']),
+      ).toEntity();
+
+      return ApiResponse(
+        data: log,
+        success: true,
+        message: 'Latest log retrieved successfully',
+      );
+    } else {
+      return ApiResponse(
+        data: Log.empty(),
+        success: false,
+        message: 'No logs found',
+      );
+    }
   }
 
   Future<ApiResponse<Log>> deleteLog({required String logId}) async {
