@@ -7,7 +7,7 @@ import 'package:payroll_app_opr_test/core/models/user_session.dart';
 class AuthService {
   final http.Client _client = http.Client();
 
-  final String _baseUrl = '';
+  final String _baseUrl = 'https://www.yahshuapayroll.com/api/';
 
   Future<ApiResponse<UserSession>> login(String email, String password) async {
     try {
