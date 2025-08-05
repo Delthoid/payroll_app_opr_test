@@ -27,6 +27,15 @@ class AddLogEvent extends LogEvent {
   List<Object?> get props => [log];
 } 
 
+class UpdateLogEvent extends LogEvent {
+  final LogDto log;
+
+  const UpdateLogEvent(this.log);
+
+  @override
+  List<Object?> get props => [log];
+}
+
 class LoadLogEvent extends LogEvent {
   final Log log;
 

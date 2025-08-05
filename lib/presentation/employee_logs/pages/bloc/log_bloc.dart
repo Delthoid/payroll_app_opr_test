@@ -6,12 +6,14 @@ import 'package:payroll_app_opr_test/domain/entities/employee/employee.dart';
 import 'package:payroll_app_opr_test/domain/entities/log.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/logs/add_log.dart';
 import 'package:payroll_app_opr_test/domain/use_cases/logs/delete_log.dart';
+import 'package:payroll_app_opr_test/domain/use_cases/logs/update_log.dart';
 
 part 'log_event.dart';
 part 'log_state.dart';
 
 class LogBloc extends Bloc<LogEvent, LogState> {
   final AddLog _addLogUseCase = GetIt.instance<AddLog>();
+  final UpdateLog _updateLogUseCase = GetIt.instance<UpdateLog>();
   final DeleteLog _deleteLogUseCase = GetIt.instance<DeleteLog>();
 
   LogBloc() : super(LogInitial()) {
@@ -58,6 +60,28 @@ class LogBloc extends Bloc<LogEvent, LogState> {
         }
       } catch (e) {
         emit(LogError(message: 'Failed to create log'));
+      }
+    });
+
+    on<UpdateLogEvent>((event, emit) async {
+      emit(LogLoading());
+      try {
+        final response = await _updateLogUseCase.call(log: event.log);
+
+        if (response.success && response.data != null) {
+          emit(
+            LogSuccess(
+              message: 'Log updated successfully',
+              log: response.data!,
+            ),
+          );
+        } else {
+          emit(
+            LogError(message: 'Unable to update log'),
+          );
+        }
+      } catch (e) {
+        emit(LogError(message: 'Failed to update log'));
       }
     });
 

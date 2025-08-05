@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:payroll_app_opr_test/core/utils/dialog_utils.dart';
 import 'package:payroll_app_opr_test/core/utils/formatters.dart';
 import 'package:payroll_app_opr_test/presentation/employee_logs/bloc/employee_logs_bloc.dart';
 import 'package:payroll_app_opr_test/presentation/employee_logs/pages/bloc/log_bloc.dart';
+import 'package:payroll_app_opr_test/router/router.dart';
 
 class ViewLog extends StatefulWidget {
   const ViewLog({super.key});
@@ -17,20 +19,28 @@ class _ViewLogState extends State<ViewLog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('View Log'),),
+      appBar: AppBar(
+        title: const Text('View Log'),
+        actions: [IconButton(onPressed: () {
+          context.pushNamed(RouteNames.updateLog);
+        }, icon: Icon(Icons.edit))],
+      ),
       body: BlocConsumer<LogBloc, LogState>(
         listener: (context, state) {
           if (state is LogLoading) {
-            DialogUtils.showLoadingDialog(context: context, message: 'Please wait...');
+            DialogUtils.showLoadingDialog(
+              context: context,
+              message: 'Please wait...',
+            );
           }
 
           if (state is LogSuccess) {
             Navigator.of(context).pop(); // Close loading dialog
-            Navigator.of(context).pop(); // Close view log screen 
+            Navigator.of(context).pop(); // Close view log screen
             context.read<EmployeeLogsBloc>().add(LoadEmployeeLogs());
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {

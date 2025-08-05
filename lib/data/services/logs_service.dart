@@ -43,8 +43,26 @@ class LogsService {
     );
 
     if (maps.isNotEmpty) {
+      final logMap = maps.first;
+
+      final List<Map<String, dynamic>> employeeMaps = await db.query(
+        'employees',
+        where: 'id = ?',
+        whereArgs: [logMap['employee_id']],
+      );
+      final employee = employeeMaps.isNotEmpty
+          ? EmployeeDto.fromJson(employeeMaps.first)
+          : Employee.empty();
+
+      final log = LogDto(
+        id: (logMap['id'] ?? 0).toString(),
+        employee: employee,
+        timeIn: DateTime.parse(logMap['time_in']),
+        timeOut: DateTime.parse(logMap['time_out']),
+      ).toEntity();
+
       return ApiResponse(
-        data: LogDto.fromJson(maps.first).toEntity(),
+        data: log,
         success: true,
         message: 'Log retrieved successfully',
       );
